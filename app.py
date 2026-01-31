@@ -7,11 +7,15 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
-# Get database URL from environment variable
-DATABASE_URL = os.environ.get("DATABASE_URL")
+# Get database URL from environment variable (lazy load to avoid errors on startup)
+def get_database_url():
+    return os.environ.get("DATABASE_URL")
 
 def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL)
+    database_url = get_database_url()
+    if not database_url:
+        raise ValueError("DATABASE_URL environment variable is not set")
+    conn = psycopg2.connect(database_url)
     return conn
 
 @app.route("/")
