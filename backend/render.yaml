@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: stock-backend-api
+    env: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python backend/app.py
+    envVars:
+      - key: DATABASE_URL
+        value: postgres://USER:PASSWORD@HOST:PORT/DATABASE
+    plan: free
